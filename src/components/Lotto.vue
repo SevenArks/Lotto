@@ -1,6 +1,7 @@
 <template>
   <div>
     <button @click.prevent="rollRandom">랜덤 돌리기</button>
+    <button @click.prevent="rollWeight">가중치 돌리기</button>
     <div class="game-list" v-for="(numbers, index) in rows" :key="index">
         <span class="number" :class="numberColor(number)" v-for="number in numbers" :key="number">{{number}}</span>
     </div>
@@ -8,7 +9,7 @@
 </template>
 
 <script>
-import { rollRandom } from "@/helpers/roll.helper.js";
+import { rollRandom, rollWeight } from "@/helpers/roll.helper.js";
 
 export default {
   name: 'Lotto',
@@ -19,7 +20,10 @@ export default {
   },
   methods: {
       rollRandom() {
-          this.rows = rollRandom(5);
+        this.rows = rollRandom(5);
+      },
+      rollWeight() {
+        this.rows = rollWeight();
       },
       numberColor(number) {
         if (number <= 10)
