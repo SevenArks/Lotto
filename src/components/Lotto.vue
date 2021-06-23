@@ -1,7 +1,11 @@
 <template>
   <div>
-    <button @click.prevent="rollRandom">랜덤 돌리기</button>
-    <button @click.prevent="rollWeight">가중치 돌리기</button>
+    <button class="btn mx-4 bg-blue-600 hover:bg-blue-900" @click.prevent="rollRandom">
+      랜덤 돌리기
+    </button>
+    <button class="btn mx-4 bg-green-600 hover:bg-green-900" @click.prevent="rollWeight">
+      가중치 돌리기
+    </button>
     <div class="game-list" v-for="(numbers, index) in rows" :key="index">
         <span class="number" :class="numberColor(number)" v-for="number in numbers" :key="number">{{number}}</span>
     </div>
