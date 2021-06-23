@@ -1,17 +1,10 @@
-function randomRange(min, max) {
+let randomRange = (min, max) => {
     return parseInt(Math.random() * (max - min) + min);
-}
+};
 
-function randomWeight(input) {
-    var array = [];
-    for(var item in input) {
-        for( var i=0; i<input[item]; i++ ) {
-            array.push(item);
-        }
-    }
-
-    return array[randomRange(0, array.length)];
-}
+let randomWeight = (weightList) => {
+    return weightList[randomRange(0, weightList.length)];
+};
 
 export {
     randomRange,

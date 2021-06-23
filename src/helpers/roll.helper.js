@@ -1,7 +1,7 @@
 import winsNumber from "@/config/winsNumber.json";
 import { randomRange, randomWeight } from "@/helpers/random.helper.js";
 
-function _getNumbers(customAction) {
+let _getNumbers = (customAction) => {
     let numbers = [];
         
     while (numbers.length < 6) {
@@ -16,9 +16,9 @@ function _getNumbers(customAction) {
     });    
 
     return numbers;
-}
+};
 
-function rollRandom(gameCount = 5) {
+let rollRandom = (gameCount = 5) => {
     
     let rows = [];
     
@@ -29,20 +29,27 @@ function rollRandom(gameCount = 5) {
     }
     
     return rows;
-}
+};
 
-function rollWeight(gameCount = 5) {
+let rollWeight = (gameCount = 5) => {
     
     let rows = [];
+    let weightList = [];
 
-    for (var i = 0; i < gameCount; i++) {
+    for(let item in winsNumber) {
+        for(let i = 0; i<winsNumber[item]; i++ ) {
+            weightList.push(item);
+        }
+    }
+
+    for (let i = 0; i < gameCount; i++) {
         rows.push(_getNumbers(() => {
-            return randomWeight(winsNumber);
+            return randomWeight(weightList);
         }));
     }
     
     return rows;
-}
+};
 
 export {
     rollRandom,
