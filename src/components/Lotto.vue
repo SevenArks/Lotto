@@ -1,33 +1,42 @@
 <template>
-  <div>
+  <div class="container">
     <button class="btn mx-4 bg-blue-600 hover:bg-blue-900" @click.prevent="rollRandom">
       랜덤 돌리기
     </button>
     <button class="btn mx-4 bg-green-600 hover:bg-green-900" @click.prevent="rollWeight">
       가중치 돌리기
     </button>
-    <div class="game-list" v-for="(numbers, index) in rows" :key="index">
-        <span class="number" :class="numberColor(number)" v-for="number in numbers" :key="number">{{number}}</span>
+    <div id="capture">
+      <div class="game-list" v-for="(numbers, index) in rows" :key="index">
+          <span class="number" :class="numberColor(number)" v-for="number in numbers" :key="number">{{number}}</span>
+      </div>
+    </div>
+    <div v-if="alertDisply" class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 rounded relative" role="alert">
+      <p class="font-bold">캡처 완료</p>
     </div>
   </div>
 </template>
 
 <script>
 import { rollRandom, rollWeight } from "@/helpers/roll.helper.js";
+import html2canvas from "html2canvas";
 
 export default {
   name: 'Lotto',
   data() {
       return {
-        rows: []
+        rows: [],
+        alertDisply: false
       }
   },
   methods: {
       rollRandom() {
         this.rows = rollRandom(5);
+        setTimeout(() => { this.capture() }, 2000);
       },
       rollWeight() {
         this.rows = rollWeight();
+        setTimeout(() => { this.capture() }, 2000);
       },
       numberColor(number) {
         if (number <= 10)
@@ -40,6 +49,24 @@ export default {
           return "number-under-40";
 
         return "number-under-45";
+      },
+      capture() {
+        html2canvas(document.querySelector("#capture")).then(canvas => {
+          const _this = this;
+          //tested on chrome 76
+          canvas.toBlob(function(blob) { 
+            const { ClipboardItem } = window;
+            const item = new ClipboardItem({ "image/png": blob });
+            navigator.clipboard.write([item]);
+            _this.alertShow();
+          });
+        });
+      },
+      alertShow() {
+        this.alertDisply = true;
+        setTimeout(() => {
+          this.alertDisply = false;
+        }, 5000);
       }
   }
 }
@@ -47,7 +74,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container { 
+  width: 450px;
+  margin: 0 auto;
+}
 .game-list {
+  display: flex;
+  justify-content: center;
   border-bottom: 2px solid #e2e2e2;
   margin: 5px 0px;
 }
@@ -57,7 +90,7 @@ export default {
 }
 
 .number {
-    display: inline-block;
+    display: block;
     width: 50px;
     height: 50px;
     line-height: 50px;
