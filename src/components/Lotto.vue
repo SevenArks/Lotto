@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <button class="btn mx-4 bg-blue-600 hover:bg-blue-900" @click.prevent="rollRandom">
+    <button class="btn mx-2 bg-blue-600 hover:bg-blue-900" @click.prevent="rollRandom">
       랜덤 돌리기
     </button>
-    <button class="btn mx-4 bg-green-600 hover:bg-green-900" @click.prevent="rollWeight">
+    <button class="btn mx-2 bg-green-600 hover:bg-green-900" @click.prevent="rollWeight">
       가중치 돌리기
+    </button>
+    <button class="btn mx-2 bg-purple-600 hover:bg-purple-900" @click.prevent="rollTopWeight">
+      상위 25 돌리기
     </button>
     <div id="capture">
       <div class="game-list" v-for="(numbers, index) in rows" :key="index">
@@ -18,7 +21,7 @@
 </template>
 
 <script>
-import { rollRandom, rollWeight } from "@/helpers/roll.helper.js";
+import { rollRandom, rollWeight, rollTopWeight } from "@/helpers/roll.helper.js";
 import html2canvas from "html2canvas";
 
 export default {
@@ -36,6 +39,10 @@ export default {
       },
       rollWeight() {
         this.rows = rollWeight();
+        setTimeout(() => { this.capture() }, 2000);
+      },
+      rollTopWeight() {
+        this.rows = rollTopWeight();
         setTimeout(() => { this.capture() }, 2000);
       },
       numberColor(number) {
